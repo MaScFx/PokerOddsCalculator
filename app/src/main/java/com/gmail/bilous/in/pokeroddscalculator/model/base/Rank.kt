@@ -1,6 +1,6 @@
 package com.gmail.bilous.`in`.pokeroddscalculator.model.base
 
-enum class Ranks(i: Int) {
+enum class Rank(var power: Int) {
     TWO(2),
     TREE(3),
     FOUR(4),
@@ -13,5 +13,5 @@ enum class Ranks(i: Int) {
     JACK(11),
     QUEEN(12),
     KING(13),
-    ACE(14)
+    ACE(14);
 }
