@@ -19,9 +19,13 @@ fun findPokerCombination(cardSet: Set<Card>): PokerCombinationResponse {
     ////////////////////////////
 
     //Royal flush
-    if (findStraightFromSortedList(sortedList) && findFlushFromList(sortedList) && sortedList.last().rank.power == 14
+    val flush = convertSetToFlushIfItIs(sortedList.toHashSet())
+    addToLog("flush.isFlush"+flush.isFlush.toString())
+    addToLog("flush.setFlush."+flush.setFlush.toString())
+    addToLog("flush.setFlush.last().rank.toString()"+flush.setFlush.last().rank.toString())
+    if (findStraightFromSortedList(sortedList) && flush.isFlush && flush.setFlush.last().rank.power == 14
     )
-        return PokerCombinationResponse(PokerCombinations.RoyalFlush, Card(Suit.SPADES, Rank.NINE))
+        return PokerCombinationResponse(PokerCombinations.RoyalFlush, Card(Suit.SPADES, Rank.TWO))
 
 
     return PokerCombinationResponse(PokerCombinations.HighCard, Card(Suit.CLUBS, Rank.ACE))

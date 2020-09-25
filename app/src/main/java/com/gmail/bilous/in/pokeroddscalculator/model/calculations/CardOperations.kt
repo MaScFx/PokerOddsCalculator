@@ -40,11 +40,13 @@ fun findFlushFromList(cardsList: List<Card>): Boolean {
 
 fun convertSetToFlushIfItIs(cardSet: Set<Card>): FlushResponse {
     if (cardSet.size < 4) return FlushResponse(false)
-    if (cardSet.size>7) throw IllegalArgumentException("Too much Cards")
+    if (cardSet.size > 7) throw IllegalArgumentException("Too much Cards")
+
     val diamondsSet = mutableSetOf<Card>()
     val clubsSet = mutableSetOf<Card>()
     val heartsSet = mutableSetOf<Card>()
     val spadesSet = mutableSetOf<Card>()
+
     cardSet.forEach {
         when (it.suit) {
             Suit.DIAMONDS -> diamondsSet.add(it)
@@ -53,5 +55,17 @@ fun convertSetToFlushIfItIs(cardSet: Set<Card>): FlushResponse {
             Suit.SPADES -> spadesSet.add(it)
         }
     }
-        //TODO: закончить.
+
+    if (diamondsSet.size < 4 && clubsSet.size < 4 && heartsSet.size < 4 && spadesSet.size < 4)
+        return FlushResponse(false)
+    val allSets = mutableSetOf(diamondsSet,clubsSet,heartsSet,spadesSet)
+    while (true){
+        allSets.forEach {
+            it.sortedBy { it.rank.power }
+            if (it.size==4) return FlushResponse(true,it)
+            if (it.size>4) {
+                it.remove(it.first())
+            }
+        }
+    }
 }
