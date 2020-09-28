@@ -6,13 +6,106 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/LinearLayoutFlop"
+        android:layout_width="210dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/LinearLayoutTurn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewFlop1"
+            style="@style/MyCardView">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rubashka"
+                android:contentDescription="@string/flop_card_1" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewFlop2"
+            style="@style/MyCardView">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rubashka"
+                android:contentDescription="@string/flop_card_2" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewFlop3"
+            style="@style/MyCardView">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rubashka"
+                android:contentDescription="@string/flop_card_3" />
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutTurn"
+        android:layout_width="70dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="15dp"
+
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayoutRiver"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/LinearLayoutFlop"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewTurn"
+            style="@style/MyCardView">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rubashka"
+                android:contentDescription="@string/turn" />
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRiver"
+        android:layout_width="70dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/LinearLayoutTurn"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewRiver"
+            style="@style/MyCardView">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rubashka"
+                android:contentDescription="@string/river" />
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:constraint_referenced_ids="LinearLayoutFlop,LinearLayoutTurn, linearLayoutRiver" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
