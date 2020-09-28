@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PokerOddsCalculator</string>
+    <string name="flop_card_1">Flop card 1</string>
+    <string name="flop_card_2">Flop card 2</string>
+    <string name="flop_card_3">Flop card 3</string>
+    <string name="turn">Turn</string>
+    <string name="river">River</string>
 </resources>
