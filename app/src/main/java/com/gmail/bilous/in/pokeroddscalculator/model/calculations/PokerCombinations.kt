@@ -15,7 +15,7 @@ fun findPokerCombination(cardSet: Set<Card>): PokerCombinationResponse {
 
 
     //Royal flush
-    val flush = convertSetToFlushIfItIs(sortedList.toHashSet())
+    val flush = findFlushInSet(sortedList.toHashSet())
 
     if (findStraightFromSortedList(sortedList) && flush.isFlush && flush.setFlush.last().rank.power == 14
     )

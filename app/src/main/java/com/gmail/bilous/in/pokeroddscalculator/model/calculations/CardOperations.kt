@@ -38,7 +38,7 @@ fun findFlushFromList(cardsList: List<Card>): Boolean {
     return (diamondsCount >= 4 || clubsCount >= 4 || heartsCount >= 4 || spadesCount >= 4)
 }
 
-fun convertSetToFlushIfItIs(cardSet: Set<Card>): FlushResponse {
+fun findFlushInSet(cardSet: Set<Card>): FlushResponse {
     if (cardSet.size < 4) return FlushResponse(false)
     if (cardSet.size > 7) throw IllegalArgumentException("Too much Cards")
 
@@ -55,17 +55,24 @@ fun convertSetToFlushIfItIs(cardSet: Set<Card>): FlushResponse {
             Suit.SPADES -> spadesSet.add(it)
         }
     }
+    when {
+        diamondsSet.size >= 4 -> return FlushResponse(true, removeLowPowerCardsInFlush(diamondsSet))
+        clubsSet.size >= 4 -> return FlushResponse(true, removeLowPowerCardsInFlush(clubsSet))
+        heartsSet.size >= 4 -> return FlushResponse(true, removeLowPowerCardsInFlush(heartsSet))
+        spadesSet.size >= 4 -> return FlushResponse(true, removeLowPowerCardsInFlush(spadesSet))
+    }
+    return FlushResponse(false)
+}
 
-    if (diamondsSet.size < 4 && clubsSet.size < 4 && heartsSet.size < 4 && spadesSet.size < 4)
-        return FlushResponse(false)
-    val allSets = mutableSetOf(diamondsSet,clubsSet,heartsSet,spadesSet)
-    while (true){
-        allSets.forEach {
-            it.sortedBy { it.rank.power }
-            if (it.size==4) return FlushResponse(true,it)
-            if (it.size>4) {
-                it.remove(it.first())
-            }
+private fun removeLowPowerCardsInFlush(oneSuitSet: MutableSet<Card>): Set<Card> {
+    if (oneSuitSet.size < 4) throw IllegalArgumentException("Argument must have minimum 4 elements")
+    while (oneSuitSet.size >= 4) {
+        if (oneSuitSet.size == 4) {
+            return oneSuitSet
+        } else {
+            oneSuitSet.remove(oneSuitSet.minByOrNull { it.rank.power })
         }
     }
+    return setOf()
 }
+
