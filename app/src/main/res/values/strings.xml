@@ -5,4 +5,5 @@
     <string name="flop_card_3">Flop card 3</string>
     <string name="turn">Turn</string>
     <string name="river">River</string>
+    <string name="texas_holdem">Texas Holdem</string>
 </resources>
