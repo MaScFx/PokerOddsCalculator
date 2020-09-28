@@ -12,17 +12,11 @@ fun findPokerCombination(cardSet: Set<Card>): PokerCombinationResponse {
     if (cardSet.isEmpty()) throw IllegalArgumentException("Empty cardSet!")
 
     val sortedList = cardSet.sortedBy { it.rank.power }
-    /////////////////////////////
-    addToLog(findStraightFromSortedList(sortedList).toString())
-    addToLog(findFlushFromList(sortedList).toString())
-    addToLog(sortedList.last().rank.power.toString())
-    ////////////////////////////
+
 
     //Royal flush
     val flush = convertSetToFlushIfItIs(sortedList.toHashSet())
-    addToLog("flush.isFlush"+flush.isFlush.toString())
-    addToLog("flush.setFlush."+flush.setFlush.toString())
-    addToLog("flush.setFlush.last().rank.toString()"+flush.setFlush.last().rank.toString())
+
     if (findStraightFromSortedList(sortedList) && flush.isFlush && flush.setFlush.last().rank.power == 14
     )
         return PokerCombinationResponse(PokerCombinations.RoyalFlush, Card(Suit.SPADES, Rank.TWO))
