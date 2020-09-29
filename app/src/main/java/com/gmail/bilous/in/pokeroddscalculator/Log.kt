@@ -1,4 +1,4 @@
-package com.gmail.bilous.`in`.pokeroddscalculator.model.calculations
+package com.gmail.bilous.`in`.pokeroddscalculator
 
 import android.util.Log
 

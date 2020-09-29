@@ -11,15 +11,20 @@ import java.lang.IllegalArgumentException
 fun findPokerCombination(cardSet: Set<Card>): PokerCombinationResponse {
     if (cardSet.isEmpty()) throw IllegalArgumentException("Empty cardSet!")
 
-    val sortedList = cardSet.sortedBy { it.rank.power }
-
+    val flush = findFlushInSet(cardSet)
+    val straight = findStraightInSet(cardSet)
 
     //Royal flush
-    val flush = findFlushInSet(sortedList.toHashSet())
-
-    if (findStraightFromSortedList(sortedList) && flush.isFlush && flush.setFlush.last().rank.power == 14
-    )
+    if (straight && flush.isFlush && flush.flushSet.last().rank.power == 14)
         return PokerCombinationResponse(PokerCombinations.RoyalFlush, Card(Suit.SPADES, Rank.TWO))
+
+    //Straight flush
+    if (straight && flush.isFlush)
+        return PokerCombinationResponse(PokerCombinations.StraightFlush, findKiker(cardSet,flush.flushSet))
+
+    // Four of a kind
+    if (findFourOfAKindInSet(cardSet))
+        return PokerCombinationResponse(PokerCombinations.FourOfAKind, findKiker(cardSet,flush.flushSet))
 
 
     return PokerCombinationResponse(PokerCombinations.HighCard, Card(Suit.CLUBS, Rank.ACE))

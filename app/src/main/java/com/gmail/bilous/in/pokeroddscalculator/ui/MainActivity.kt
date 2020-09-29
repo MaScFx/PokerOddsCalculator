@@ -3,6 +3,7 @@ package com.gmail.bilous.`in`.pokeroddscalculator.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.gmail.bilous.`in`.pokeroddscalculator.R
+import com.gmail.bilous.`in`.pokeroddscalculator.addToLog
 import com.gmail.bilous.`in`.pokeroddscalculator.model.base.Card
 import com.gmail.bilous.`in`.pokeroddscalculator.model.base.Rank
 import com.gmail.bilous.`in`.pokeroddscalculator.model.base.Suit
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val response = findFlushInSet(setTest)
 
         addToLog(response.isFlush.toString())
-        addToLog(response.setFlush.toString())
+        addToLog(response.flushSet.toString())
 
     }
 }
