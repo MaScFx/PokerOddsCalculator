@@ -3,38 +3,55 @@ package com.gmail.bilous.`in`.pokeroddscalculator.model.calculations
 import com.gmail.bilous.`in`.pokeroddscalculator.model.base.Card
 import com.gmail.bilous.`in`.pokeroddscalculator.model.base.Rank
 import com.gmail.bilous.`in`.pokeroddscalculator.model.base.Suit
-import com.gmail.bilous.`in`.pokeroddscalculator.model.calculations.responses.FlushResponse
 import java.lang.IllegalArgumentException
+import java.util.*
 
-fun findStraightInSet(cardsSet: Set<Card>): Boolean {
-    if (cardsSet.size < 5) return false
-    val cardsPowerList = ArrayList<Int>()
+fun isStraight(cardsSet: TreeSet<Card>): Int {
+    if (cardsSet.size < 5) return -1
+    val cardsPowerSet = TreeSet<Int>()
     if (cardsSet.contains(Card(Suit.SPADES, Rank.ACE)) || cardsSet.contains( Card(Suit.DIAMONDS, Rank.ACE)) ||
         cardsSet.contains(Card(Suit.HEARTS, Rank.ACE)) || cardsSet.contains( Card(Suit.CLUBS, Rank.ACE))) {
-        cardsPowerList.add(1)
+        cardsPowerSet.add(1)
     }
-    cardsSet.forEach { cardsPowerList.add(it.rank.power) }
-    cardsPowerList.sortedBy { it }
+    cardsSet.forEach { cardsPowerSet.add(it.rank.power) }
 
     var sequenceCount = 1
-    var previousRank = cardsPowerList[0]
-    cardsPowerList.forEach {
-        if (it - previousRank <= 1) sequenceCount++
-        else sequenceCount = 1
+    var previousRank = cardsPowerSet.pollLast()
+    val descendingSet = cardsPowerSet.descendingSet()
+    val straightSet= TreeSet<Int>()
+    straightSet.add(previousRank)
+
+    descendingSet.forEach {
+        if (previousRank - it == 1){
+            sequenceCount++
+            straightSet.add(it)
+        }
+        else {
+            sequenceCount = 1
+            straightSet.clear()
+        }
         previousRank = it
-        if (sequenceCount >= 5) return true
+        if (sequenceCount >= 5) return straightSet.last()
     }
-    return false
+    return -1
 }
 
-fun findFlushInSet(cardSet: Set<Card>): FlushResponse {
-    if (cardSet.size < 4) return FlushResponse(false)
+fun isTriple(cardsSet: TreeSet<Card>):Int{
+
+    for (r in Rank.values().reversedArray()){
+        if (findSomeRanks(cardsSet,r,3)) return r.power
+    }
+    return -1
+}
+
+fun isFlush(cardSet: TreeSet<Card>): Int {
+    if (cardSet.size < 4) return -1
     if (cardSet.size > 7) throw IllegalArgumentException("Too much Cards")
 
-    val diamondsSet = mutableSetOf<Card>()
-    val clubsSet = mutableSetOf<Card>()
-    val heartsSet = mutableSetOf<Card>()
-    val spadesSet = mutableSetOf<Card>()
+    val diamondsSet = TreeSet<Card>()
+    val clubsSet = TreeSet<Card>()
+    val heartsSet = TreeSet<Card>()
+    val spadesSet = TreeSet<Card>()
 
     cardSet.forEach {
         when (it.suit) {
@@ -45,40 +62,19 @@ fun findFlushInSet(cardSet: Set<Card>): FlushResponse {
         }
     }
     return when {
-        diamondsSet.size >= 4 -> FlushResponse(true, removeLowPowerCardsInFlush(diamondsSet))
-        clubsSet.size >= 4 -> FlushResponse(true, removeLowPowerCardsInFlush(clubsSet))
-        heartsSet.size >= 4 -> FlushResponse(true, removeLowPowerCardsInFlush(heartsSet))
-        spadesSet.size >= 4 -> FlushResponse(true, removeLowPowerCardsInFlush(spadesSet))
-        else -> FlushResponse(false)
+        diamondsSet.size >= 4 -> diamondsSet.last().rank.power
+        clubsSet.size >= 4 -> clubsSet.last().rank.power
+        heartsSet.size >= 4 -> heartsSet.last().rank.power
+        spadesSet.size >= 4 -> spadesSet.last().rank.power
+        else -> -1
     }
 }
 
-fun findFourOfAKindInSet(cardsSet: Set<Card>):Boolean{
+fun isQuads(cardsSet: Set<Card>):Int{
     for (r in Rank.values()){
-        if (findFourRanks(cardsSet,r)) return true
+        if (findSomeRanks(cardsSet,r,4)) return r.power
     }
-    return false
-
-}
-
-private fun findFourRanks(cardsSet: Set<Card>, rank: Rank):Boolean{
-    var count = 0
-    for( it in cardsSet){
-        if (it.rank == rank) count++
-    }
-    return count >= 4
-}
-
-private fun removeLowPowerCardsInFlush(oneSuitSet: MutableSet<Card>): Set<Card> {
-    if (oneSuitSet.size < 4) throw IllegalArgumentException("Argument must have minimum 4 elements")
-    while (oneSuitSet.size >= 4) {
-        if (oneSuitSet.size == 4) {
-            return oneSuitSet
-        } else {
-            oneSuitSet.remove(oneSuitSet.minByOrNull { it.rank.power })
-        }
-    }
-    return setOf()
+    return -1
 }
 
 fun findKiker(allCards: Set<Card>, excludedCards: Set<Card>): Card {
@@ -93,19 +89,10 @@ fun findKiker(allCards: Set<Card>, excludedCards: Set<Card>): Card {
     }
 }
 
-
-//
-//fun findFlushFromList(cardsList: List<Card>): Boolean {
-//    if (cardsList.size < 4) return false
-//    var diamondsCount = 0
-//    var clubsCount = 0
-//    var heartsCount = 0
-//    var spadesCount = 0
-//    cardsList.forEach {
-//        if (Suit.DIAMONDS == it.suit) diamondsCount++
-//        if (Suit.CLUBS == it.suit) clubsCount++
-//        if (Suit.HEARTS == it.suit) heartsCount++
-//        if (Suit.SPADES == it.suit) spadesCount++
-//    }
-//    return (diamondsCount >= 4 || clubsCount >= 4 || heartsCount >= 4 || spadesCount >= 4)
-//}
+private fun findSomeRanks(cardsSet: Set<Card>, rank: Rank, someCount:Int):Boolean{
+    var count = 0
+    for( it in cardsSet){
+        if (it.rank == rank) count++
+    }
+    return count == someCount
+}
